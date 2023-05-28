@@ -38,12 +38,11 @@ function htmlSet(selector, v) {
     });
 }
 
-/*
+
 function ajaxGet(selector, url) {
     const xhttp = new XMLHttpRequest();
 
     xhttp.onload = function () {
-        alert ('qqq');
         htmlSet(selector, this.responseText);
     };
 
@@ -57,33 +56,27 @@ function ajaxSet(o, v) {
     const xhttp = new XMLHttpRequest();
 
     xhttp.onload = function () {
-        alert ('ttt')
-        htmlSet(o.html_selector, v);
+        htmlSet(o.html_selector, this.responseText);
     };
 
     xhttp.open("POST", o.url);
     xhttp.send(JSON.stringify(v));
 }
-*/
 
 function idahoGetValue(o) {
-    //if (o.url == null) return htmlGet(o.html_selector);
-    //return ajaxGet(o.html_selector, o.url);
-    
     return htmlGet(o.html_selector);
 }
 
 function idahoSetValue(o, v) {
-    /*
     if (o.url == null) {
         htmlSet(o.html_selector, v);
     } else {
+        htmlSet(o.html_selector, v);
         ajaxSet(o.url, v);
-    }*/
-    
-    htmlSet(o.html_selector, v);
+    }
 }
 
+// add persistent objects here
 var idahoObjects = [
     {
         html_selector: '#textfield',
@@ -93,7 +86,7 @@ var idahoObjects = [
     
     {
         html_selector: '#textfieldarea',
-        //url: "file:///C:/Users/mspma/Documents/GitHub/IdahoJS/index.html",
+        url: "/",
         get value() { return idahoGetValue(this); },
         set value(v) { idahoSetValue(this, v); }
     }
@@ -195,6 +188,12 @@ function idahoInitialize() {
     for (var t in idahoControllers) {
         if (idahoControllers[t].path == h) {
             idahoControllers[t].controller (args);
+        }
+    }
+    
+    for (var t in idahoObjects) {
+        if (idahoObjects[t].url != null) {
+            ajaxGet(idahoObjects[t].html_selector, idahoObjects[t].url);
         }
     }
 }
