@@ -4,24 +4,7 @@
  */
 
 // add new controllers here
-var idahoControllers = [
-    {
-        path: "index.html",
-        args: [ "a" ],
-        html_selector: "#index_htm",
-        controller: function (args) {
-            alert (JSON.stringify(args));
-        }
-    },
-    
-    {
-        path: "index.html",
-        html_selector: "#index_html",
-        controller: function (args) {
-            alert (JSON.stringify(args));
-        }
-    }
-];
+var idahoControllers = [];
 
 function htmlGet(selector) {
     var r = [];
@@ -78,20 +61,7 @@ function idahoSetValue(o, v) {
 }
 
 // add persistent objects here
-var idahoObjects = [
-    {
-        html_selector: '#textfield',
-        get value() { return idahoGetValue(this); },
-        set value(v) { idahoSetValue(this, v); }
-    },
-    
-    {
-        html_selector: '#textfieldarea',
-        url: "/",
-        get value() { return idahoGetValue(this); },
-        set value(v) { idahoSetValue(this, v); }
-    }
-];
+var idahoObjects = [];
 
 function decodeURLSymbol(c) {
     if (c.charCodeAt(0) >= '0'.charCodeAt(0)
@@ -191,7 +161,7 @@ function idahoInitialize() {
             args.at(j).values.push(p.length >= 2 ? p.slice(1).join('') : null);
         }
     }
-    
+
     args.sort();
 
     for (var t in idahoControllers) {
