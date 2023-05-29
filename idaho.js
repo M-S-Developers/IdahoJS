@@ -6,7 +6,8 @@
 // add new controllers here
 var idahoControllers = [
     {
-        path: "index.htm",
+        path: "index.html",
+        args: [ "a" ],
         html_selector: "#index_htm",
         controller: function (args) {
             alert (JSON.stringify(args));
@@ -134,6 +135,19 @@ function decodeURLString(s) {
     return r;
 }
 
+function argsEquivalent(a, b) {
+    var sza = a == null ? 0 : a.length;
+    var szb = b == null ? 0 : b.length;
+    
+    if (sza != szb) return false;
+    
+    for (var i = 0; i < sza; ++i) {
+        if (a.at(i) != b.at(i).key) return false;
+    }
+    
+    return true;
+}
+
 function idahoInitialize() {
     var h = window.location.href + "";
     
@@ -178,15 +192,22 @@ function idahoInitialize() {
         }
     }
     
+    args.sort();
+
     for (var t in idahoControllers) {
-        if (idahoControllers[t].path != h) {
+        if (idahoControllers[t].args != null)
+            idahoControllers[t].args.sort();
+    }
+    
+    for (var t in idahoControllers) {
+        if (idahoControllers[t].path != h || !argsEquivalent (idahoControllers[t].args, args)) {
             document.querySelectorAll(idahoControllers[t].html_selector).forEach(
                     (e) => { e.remove(); });
         }
     }
     
     for (var t in idahoControllers) {
-        if (idahoControllers[t].path == h) {
+        if (idahoControllers[t].path == h && argsEquivalent (idahoControllers[t].args, args)) {
             idahoControllers[t].controller (args);
         }
     }
